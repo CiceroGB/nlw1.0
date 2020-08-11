@@ -5,6 +5,31 @@ import { Request, Response, request } from 'express';
 import knex from '../database/connection';
 
 class PointsController {
+  async index(req: Request, res: Response) {
+    const { city, uf, items } = req.query;
+
+    const parsedItems = String(items)
+      .split(',')
+      .map(item => Number(item.trim()));
+
+    const points = await knex('points')
+      .join('point_items', 'points.id', '=', 'point_items.point_id')
+      .whereIn('point_items.item_id', parsedItems)
+      .where('city', String(city))
+      .where('uf', String(uf))
+      .distinct()
+      .select('points.*');
+
+    const serializedPoints = points.map(point => {
+      return {
+        ...point,
+        image_url: `http://localhost:3000/uploads/${point.image}`,
+      };
+    });
+
+    return res.json(serializedPoints);
+  }
+
   async show(req: Request, res: Response) {
     const { id } = req.params;
 
@@ -12,7 +37,13 @@ class PointsController {
     if (!point) {
       res.status(400).json({ message: 'Point not found' });
     }
-    return res.json(point);
+
+    const item = await knex('items')
+      .join('point_items', 'items.id', '=', 'point_items.item_id')
+      .where('point_items.point_id', id)
+      .select('items.title');
+
+    return res.json({ point, item });
   }
 
   async create(req: Request, res: Response) {
@@ -48,6 +79,8 @@ class PointsController {
     });
 
     await trx('point_items').insert(pointIems);
+
+    await trx.commit();
 
     return res.json({ ok: 'ok' });
   }
