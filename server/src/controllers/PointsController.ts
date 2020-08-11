@@ -1,10 +1,20 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Request, Response } from 'express';
+import { Request, Response, request } from 'express';
 import knex from '../database/connection';
 
 class PointsController {
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const point = await knex('points').where('id', id).first();
+    if (!point) {
+      res.status(400).json({ message: 'Point not found' });
+    }
+    return res.json(point);
+  }
+
   async create(req: Request, res: Response) {
     const {
       name,
