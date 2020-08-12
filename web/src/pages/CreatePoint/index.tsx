@@ -1,6 +1,6 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map, TileLayer, Marker } from 'react-leaflet';
 import { Link } from 'react-router-dom';
 import { LeafletMouseEvent } from 'leaflet';
 import api from '../../services/api';
@@ -66,6 +66,8 @@ const CreatePoint = () => {
                         sigla: uf.sigla
                     }
                 });
+                ufInitials.sort((a, b) => a.sigla.localeCompare(b.sigla));
+
                 setUfs(ufInitials);
             });
 
@@ -117,10 +119,10 @@ const CreatePoint = () => {
         })
     }
 
-    function handleSelectedItem (id: number){
+    function handleSelectedItem(id: number) {
         const alreadySelected = selectedItems.findIndex(item => item === id)
-    
-        if(alreadySelected >= 0){
+
+        if (alreadySelected >= 0) {
             const filteredItems = selectedItems.filter(item => item !== id)
             setSelectedItems(filteredItems)
         } else {
@@ -128,6 +130,27 @@ const CreatePoint = () => {
         }
     }
 
+    function handleSubmit(event: FormEvent) {
+        event.preventDefault();
+        const { name, email, whatsapp } = formData;
+        const uf = selectedUf;
+        const city = selectedCity;
+        const [latitude, longitude] = selectedPosition;
+        const items = selectedItems;
+        const data = {
+            name,
+            email,
+            whatsapp,
+            uf,
+            city,
+            latitude,
+            longitude,
+            items
+        };
+
+        console.log(data)
+
+    }
 
     return (
         <div id="page-create-point">
@@ -138,7 +161,7 @@ const CreatePoint = () => {
                     Voltar para home
                 </Link>
             </header>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <h1>Cadastro do <br />Ponto de Coleta</h1>
                 <fieldset>
                     <legend>
@@ -229,8 +252,8 @@ const CreatePoint = () => {
                     <ul className="items-grid">
                         {items.map(item =>
                             <li key={item.id}
-                                onClick = {()=>handleSelectedItem(item.id)}
-                                className={selectedItems.includes(item.id) ? 'selected': ''}>
+                                onClick={() => handleSelectedItem(item.id)}
+                                className={selectedItems.includes(item.id) ? 'selected' : ''}>
                                 <img src={item.image_url} alt={item.title}></img>
                                 <span>{item.title}</span>
                             </li>
