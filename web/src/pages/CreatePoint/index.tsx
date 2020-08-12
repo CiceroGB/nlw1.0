@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Link } from 'react-router-dom';
+import api from '../../services/api';
+
+
 import logo from '../../assets/logo.svg';
 
 import './styles.css';
-import { Link } from 'react-router-dom';
+import { response } from 'express';
 
+interface Item {
+    id: number,
+    title: string,
+    image_url: string
+}
 
 const CreatePoint = () => {
+    const [items, setItems] = useState<Item[]>([]);
+
+    useEffect(() => {
+        api.get('items').then(response => {
+            setItems(response.data);
+        })
+    }, [])
+
     return (
         <div id="page-create-point">
             <header>
@@ -95,30 +112,13 @@ const CreatePoint = () => {
                         <span>Selecione itens de coleta</span>
                     </legend>
                     <ul className="items-grid">
-                        <li>
-                            <img src="http://localhost:3333/uploads/baterias.svg" alt="Teste" />
-                            <span>Baterias</span>
-                        </li>
-                        <li>
-                            <img src="http://localhost:3333/uploads/baterias.svg" alt="Teste" />
-                            <span>Baterias</span>
-                        </li>
-                        <li>
-                            <img src="http://localhost:3333/uploads/baterias.svg" alt="Teste" />
-                            <span>Baterias</span>
-                        </li>
-                        <li className="selected">
-                            <img src="http://localhost:3333/uploads/baterias.svg" alt="Teste" />
-                            <span>Baterias</span>
-                        </li>
-                        <li>
-                            <img src="http://localhost:3333/uploads/baterias.svg" alt="Teste" />
-                            <span>Baterias</span>
-                        </li>
-                        <li>
-                            <img src="http://localhost:3333/uploads/baterias.svg" alt="Teste" />
-                            <span>Baterias</span>
-                        </li>
+                        {items.map(item => 
+                            <li key={item.id}
+                                className="selected">
+                                <img src={item.image_url} alt={item.title}></img>
+                                <span>{item.title}</span>
+                            </li>
+                        )}
 
                     </ul>
                 </fieldset>
