@@ -130,7 +130,7 @@ const CreatePoint = () => {
         }
     }
 
-    function handleSubmit(event: FormEvent) {
+    async function handleSubmit(event: FormEvent) {
         event.preventDefault();
         const { name, email, whatsapp } = formData;
         const uf = selectedUf;
@@ -148,7 +148,9 @@ const CreatePoint = () => {
             items
         };
 
-        console.log(data)
+       await api.post('points', data);
+
+       alert('Criado com sucesso');
 
     }
 
