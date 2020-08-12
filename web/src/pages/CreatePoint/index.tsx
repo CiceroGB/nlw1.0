@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import { Map, TileLayer, Marker } from 'react-leaflet';
-import { Link } from 'react-router-dom';
+import { Link , useHistory} from 'react-router-dom';
 import { LeafletMouseEvent } from 'leaflet';
 import api from '../../services/api';
 import axios from 'axios';
@@ -44,6 +44,8 @@ const CreatePoint = () => {
         email: '',
         whatsapp: ''
     });
+
+    const history = useHistory();
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(position => {
@@ -151,6 +153,7 @@ const CreatePoint = () => {
        await api.post('points', data);
 
        alert('Criado com sucesso');
+       history.push('/')
 
     }
 
