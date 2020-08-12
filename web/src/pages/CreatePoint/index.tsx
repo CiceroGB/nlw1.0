@@ -37,13 +37,20 @@ const CreatePoint = () => {
     const [selectedCity, setSelectedCity] = useState('0');
     const [inicialPosition, setInicialPosition] = useState<[number, number]>([0, 0]);
     const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
+    const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
-    useEffect(()=>{
-        navigator.geolocation.getCurrentPosition(position=>{
-            const {latitude ,longitude} = position.coords;
-            setInicialPosition([latitude,longitude])
-         })
-    },[])
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        whatsapp: ''
+    });
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(position => {
+            const { latitude, longitude } = position.coords;
+            setInicialPosition([latitude, longitude])
+        })
+    }, [])
 
     useEffect(() => {
         api.get('items').then(response => {
@@ -102,6 +109,25 @@ const CreatePoint = () => {
         ])
     }
 
+    function handleInput(event: ChangeEvent<HTMLInputElement>) {
+        const { name, value } = event.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        })
+    }
+
+    function handleSelectedItem (id: number){
+        const alreadySelected = selectedItems.findIndex(item => item === id)
+    
+        if(alreadySelected >= 0){
+            const filteredItems = selectedItems.filter(item => item !== id)
+            setSelectedItems(filteredItems)
+        } else {
+            setSelectedItems([...selectedItems, id])
+        }
+    }
+
 
     return (
         <div id="page-create-point">
@@ -126,6 +152,7 @@ const CreatePoint = () => {
                             type="text"
                             name="name"
                             id="name"
+                            onChange={handleInput}
                         />
                     </div>
                     <div className="field-group">
@@ -137,6 +164,7 @@ const CreatePoint = () => {
                                 type="text"
                                 name="email"
                                 id="email"
+                                onChange={handleInput}
                             />
                         </div>
                         <div className="field">
@@ -147,6 +175,7 @@ const CreatePoint = () => {
                                 type="text"
                                 name="whatsapp"
                                 id="whatsapp"
+                                onChange={handleInput}
                             />
                         </div>
                     </div>
@@ -200,7 +229,8 @@ const CreatePoint = () => {
                     <ul className="items-grid">
                         {items.map(item =>
                             <li key={item.id}
-                                className="selected">
+                                onClick = {()=>handleSelectedItem(item.id)}
+                                className={selectedItems.includes(item.id) ? 'selected': ''}>
                                 <img src={item.image_url} alt={item.title}></img>
                                 <span>{item.title}</span>
                             </li>
