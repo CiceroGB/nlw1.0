@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Text } from 'react-native';
+import { View, ImageBackground, Image, Text } from 'react-native';
 
 import styles from './styles';
 
@@ -9,7 +9,11 @@ import styles from './styles';
 
 const Home = () => {
     return (
-        <View style={styles.container}>
+        <ImageBackground
+            source={require('../../assets/home-background.png')}
+            style={styles.container}
+            imageStyle={{ width: 274, height: 368 }}
+        >
             <View style={styles.main}>
                 <Image source={require('../../assets/logo.png')} />
 
@@ -17,10 +21,14 @@ const Home = () => {
                     Seu Marketplace de coleta
                 </Text>
 
+                <Text style={styles.description}>
+                    Ajudando a encontrar pontos de coleta
+                </Text>
+
             </View>
 
 
-        </View>
+        </ImageBackground>
     )
 
 }
