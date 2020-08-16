@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Feather as Icon } from '@expo/vector-icons'
 import MapView from 'react-native-maps';
 import { SvgUri } from 'react-native-svg';
@@ -30,12 +30,28 @@ const Points = () => {
 
                 </View>
                 <View style={styles.itemsContainer}>
-                    <TouchableOpacity onPress={() => { }} style={styles.item}>
-                        <SvgUri width={42} height={42} uri='http://localhost:3333/uploads/lampadas.svg' />
-                        <Text>Lâmpadas</Text>
-
-                    </TouchableOpacity>
-
+                    <ScrollView 
+                    horizontal 
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{paddingHorizontal:20}}
+                    >
+                        <TouchableOpacity onPress={() => { }} style={styles.item}>
+                            <SvgUri width={42} height={42} uri='http://localhost:3333/uploads/lampadas.svg' />
+                            <Text style={styles.itemTitle}>Lâmpadas</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => { }} style={styles.item}>
+                            <SvgUri width={42} height={42} uri='http://localhost:3333/uploads/lampadas.svg' />
+                            <Text style={styles.itemTitle}>Lâmpadas</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => { }} style={styles.item}>
+                            <SvgUri width={42} height={42} uri='http://localhost:3333/uploads/lampadas.svg' />
+                            <Text style={styles.itemTitle}>Lâmpadas</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => { }} style={styles.item}>
+                            <SvgUri width={42} height={42} uri='http://localhost:3333/uploads/lampadas.svg' />
+                            <Text style={styles.itemTitle}>Lâmpadas</Text>
+                        </TouchableOpacity>
+                    </ScrollView>
                 </View>
 
 
