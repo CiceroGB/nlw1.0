@@ -67,5 +67,24 @@ export default StyleSheet.create({
     color: '#FFF',
     fontFamily: 'Roboto_500Medium',
     fontSize: 16,
+  },
+
+  inputIOS: {
+    height: 60,
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    marginBottom: 18,
+    paddingHorizontal: 24,
+    fontSize: 16,
+    textAlign: 'center'
+  },
+  inputAndroid: {
+    height: 60,
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    marginBottom: 18,
+    paddingHorizontal: 24,
+    fontSize: 16,
+    textAlign: 'center'
   }
 });

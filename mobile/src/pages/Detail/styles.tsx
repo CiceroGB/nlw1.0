@@ -66,7 +66,6 @@ export default StyleSheet.create({
       borderColor: '#999',
       paddingVertical: 20,
       paddingHorizontal: 32,
-      paddingBottom:0,
       flexDirection: 'row',
       justifyContent: 'space-between'
     },
