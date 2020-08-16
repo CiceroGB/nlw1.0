@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView , Image} from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { Feather as Icon } from '@expo/vector-icons'
 import MapView, { Marker } from 'react-native-maps';
 import { SvgUri } from 'react-native-svg';
@@ -13,6 +13,10 @@ const Points = () => {
 
     function handleNavigatrBack() {
         navigation.goBack();
+    }
+
+    function handleNavigateToDetail(id: number) {
+        navigation.navigate('Detail', {point_id: id})
     }
 
     return (
@@ -36,6 +40,8 @@ const Points = () => {
                         }}
                     >
                         <Marker
+                         onPress={() => handleNavigateToDetail(2)}
+                            style={styles.mapMarker}
                             coordinate={{
                                 latitude: -27.2092052,
                                 longitude: -49.6401092,
