@@ -7,7 +7,7 @@ import api from '../../services/api';
 import * as Location from 'expo-location';
 
 import styles from './styles';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 interface Item {
     id: number,
@@ -31,6 +31,8 @@ interface Params {
 
 const Points = () => {
     const navigation = useNavigation();
+    const route = useRoute();
+    const routeParams = route.params as Params
     const [items, setItems] = useState<Item[]>([]);
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
     const [initialPosition, setInitialPosition] = useState<[number, number]>([0, 0]);
@@ -62,10 +64,14 @@ const Points = () => {
     }, []);
 
     useEffect(() => {
+        // console.log(routeParams.selectedUf);
+        // console.log(routeParams.selectedCity);
 
         api.get('/points', {
             params: {
- 
+                // city: routeParams.selectedCity,
+                // uf: routeParams.selectedUf,
+                // items: selectedItems
                 city: "Rio do Sul",
                 uf: "SP",
                 items: selectedItems

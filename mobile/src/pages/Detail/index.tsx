@@ -4,19 +4,48 @@ import { View, Text, TouchableOpacity, Image, SafeAreaView, Linking } from 'reac
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { RectButton } from 'react-native-gesture-handler';
 import { Feather as Icon, FontAwesome } from '@expo/vector-icons';
+import api from '../../services/api';
+interface Params {
+    point_id: number
+}
 
-
+interface Data {
+    point: {
+        image: string,
+        name: string,
+        email: string,
+        whatsapp: string,
+        city: string,
+        uf: string
+    },
+    item: {
+        title: string
+    }[]
+}
 
 const Detail = () => {
+    const navigation = useNavigation()
+    const route = useRoute()
+    const routeParams = route.params as Params
+    const [data, setData] = useState<Data>({} as Data)
 
-    const navigation = useNavigation();
+    useEffect(() => {
+        api.get(`/points/${routeParams.point_id}`).then(response => {
+            setData(response.data)
+        })
+    }, [])
 
     function handleNavigateBack() {
-        navigation.goBack();
+        navigation.goBack()
     }
 
+
     function handleWhatsapp() {
-        Linking.openURL(`whatsapp://send?phone=${'data.point.whatsapp'}&text=Tenho interesse sobre coleta de resíduos`)
+        Linking.openURL(`whatsapp://send?phone=${data.point.whatsapp}&text=Tenho interesse sobre coleta de resíduos`)
+    }
+
+    if(!data.point){ 
+        return null
     }
 
     return (
@@ -27,16 +56,14 @@ const Detail = () => {
                 </TouchableOpacity>
 
                 <Image style={styles.pointImage}
-                source={{ uri: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60' }}/>
-                <Text style={styles.pointName}>data.point.name</Text>
+                source={{ uri: data.point.image }}/>
+                <Text style={styles.pointName}>{data.point.name}</Text>
                 <Text style={styles.itemsTitle}>Items Coletados:</Text>
-                <Text style={styles.pointItems}>
-                    
-                </Text>
+                <Text style={styles.pointItems}>{data.item.map(item => item.title).join(', ')}</Text>
 
                 <View style={styles.address}>
                     <Text style={styles.addressTitle}>Endereço:</Text>
-                    <Text style={styles.addressContent}>data.point.city - data.point.uf</Text>
+                    <Text style={styles.addressContent}>{data.point.city} - {data.point.uf}</Text>
                 </View>
             </View>
 
