@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView , Image} from 'react-native';
 import { Feather as Icon } from '@expo/vector-icons'
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { SvgUri } from 'react-native-svg';
 
 import styles from './styles';
@@ -26,14 +26,35 @@ const Points = () => {
                 <Text style={styles.description}>Encontre no mapa um ponto de coleta.</Text>
 
                 <View style={styles.mapContainer}>
-                    <MapView style={styles.map} />
+                    <MapView
+                        style={styles.map}
+                        initialRegion={{
+                            latitude: -27.2092052,
+                            longitude: -49.6401092,
+                            latitudeDelta: 0.014,
+                            longitudeDelta: 0.014
+                        }}
+                    >
+                        <Marker
+                            coordinate={{
+                                latitude: -27.2092052,
+                                longitude: -49.6401092,
+                            }}>
+                            <View style={styles.mapMarkerContainer}>
+                                <Image style={styles.mapMarkerImage}
+                                    source={{ uri: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60' }} />
+                                <Text style={styles.mapMarkerTitle}>point.name</Text>
+                            </View>
+                        </Marker>
+
+                    </MapView>
 
                 </View>
                 <View style={styles.itemsContainer}>
-                    <ScrollView 
-                    horizontal 
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={{paddingHorizontal:20}}
+                    <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={{ paddingHorizontal: 20 }}
                     >
                         <TouchableOpacity onPress={() => { }} style={styles.item}>
                             <SvgUri width={42} height={42} uri='http://localhost:3333/uploads/lampadas.svg' />
