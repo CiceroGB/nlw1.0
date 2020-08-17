@@ -3,8 +3,7 @@
 </h1>
 
 <h1 align="center">
-<img width="600"  alt="Layout" src="1">
- <img width="180"  alt="Layout" src="2">
+<img width="800"  alt="Layout" src="https://user-images.githubusercontent.com/63745509/90402243-8e373680-e075-11ea-9747-1912864fd41b.png">
 </h1>
 
 ## About project
